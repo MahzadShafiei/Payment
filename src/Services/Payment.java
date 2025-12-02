@@ -12,24 +12,43 @@ public abstract class Payment implements fee{
     protected double fee;
     protected String cardNumber;
     protected LocalDate withdrawalDate;
-    protected double amount;
     protected final String bankAccountNumber;
     protected final Menu selectedMenu;
 
-    public Payment(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, double amount, Menu selectedMenu)
+    public Payment(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, Menu selectedMenu)
     {
         this.sms = sms;
         this.pos = pos;
         this.bankAccountNumber = "123";
         this.cardNumber = cardNumber;
         this.withdrawalDate = withdrawalDate;
-        this.amount = amount;
         this.selectedMenu = selectedMenu;
     }
 
     @Override
     public void calculateFee() {
-        this.fee = 200;
+        switch(selectedMenu)
+        {
+            case AccountBalance:
+                this.fee = 10;
+                break;
+
+            case Buy:
+                this.fee = 20;
+                break;
+
+            case Bill:
+                this.fee = 30;
+                break;
+
+            case Charg:
+                this.fee = 40;
+                break;
+
+            default :
+                this.fee = 0;
+
+        };
     }
 
     public abstract boolean processPayment();

@@ -6,8 +6,8 @@ import Contract.Sms;
 import Enums.Menu;
 
 public class AccountBalance extends Payment{
-    public AccountBalance(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, double amount, Menu selectedMenu) {
-        super(pos, sms, cardNumber, withdrawalDate, amount, selectedMenu);
+    public AccountBalance(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, Menu selectedMenu) {
+        super(pos, sms, cardNumber, withdrawalDate, selectedMenu);
     }
 
     @Override

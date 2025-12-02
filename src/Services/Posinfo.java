@@ -1,7 +1,6 @@
 package Services;
 
 import Contract.Pos;
-
 import java.time.LocalDate;
 
 public class Posinfo implements Pos {

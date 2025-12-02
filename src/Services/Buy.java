@@ -8,8 +8,10 @@ import Enums.Menu;
 
 public class Buy extends Payment implements fee{
 
+    private double amount;
     public Buy(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, double amount, Menu selectedMenu) {
-        super(pos, sms, cardNumber, withdrawalDate, amount, selectedMenu);
+        super(pos, sms, cardNumber, withdrawalDate, selectedMenu);
+        this.amount = amount;
     }
 
     @Override

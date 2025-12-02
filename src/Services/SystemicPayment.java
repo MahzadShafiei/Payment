@@ -6,11 +6,12 @@ import Contract.Sms;
 import Contract.fee;
 import Enums.Menu;
 
-public abstract class ChargSim extends Payment implements fee{
+public abstract class SystemicPayment extends Payment implements fee {
 
+    protected double amount;
     protected String recieveAccountNumber;
-    public ChargSim(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, double amount, Menu selectedMenu) {
-        super(pos, sms, cardNumber, withdrawalDate, amount, selectedMenu);
+    public SystemicPayment(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, Menu selectedMenu) {
+        super(pos, sms, cardNumber, withdrawalDate, selectedMenu);
     }
 
     @Override
