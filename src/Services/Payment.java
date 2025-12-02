@@ -7,7 +7,6 @@ import Contract.fee;
 import Enums.Menu;
 
 public abstract class Payment implements fee{
-    protected final Pos  pos;
     protected final Sms sms;
     protected double fee;
     protected String cardNumber;
@@ -15,14 +14,13 @@ public abstract class Payment implements fee{
     protected final String bankAccountNumber;
     protected final Menu selectedMenu;
 
-    public Payment(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, Menu selectedMenu)
+    public Payment(Sms sms, Posinfo posinfo)
     {
         this.sms = sms;
-        this.pos = pos;
-        this.bankAccountNumber = "123";
-        this.cardNumber = cardNumber;
-        this.withdrawalDate = withdrawalDate;
-        this.selectedMenu = selectedMenu;
+        this.bankAccountNumber = posinfo.bankAccountNumber;
+        this.cardNumber = posinfo.cardNumber;
+        this.withdrawalDate = posinfo.withdrawalDate;
+        this.selectedMenu = posinfo.selectedMenu;
     }
 
     @Override
@@ -52,11 +50,6 @@ public abstract class Payment implements fee{
     }
 
     public abstract boolean processPayment();
-
-    public String getPosOwnerAccountNumber()
-    {
-        return pos.getPosOwnerAccountNumber();
-    }
 
     protected void  sendSMS(String message)
     {

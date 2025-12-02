@@ -8,8 +8,8 @@ import Enums.Menu;
 
 public class ChargSimHamrah extends SystemicPayment implements Systemic {
     private boolean isDirect;
-    public ChargSimHamrah(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, double amount,  Menu selectedMenu, String phoneNumber, boolean isDirect) {
-        super(pos, sms, cardNumber, withdrawalDate,   selectedMenu);
+    public ChargSimHamrah(Sms sms, Posinfo posinfo, double amount, String phoneNumber, boolean isDirect) {
+        super(sms, posinfo);
         super.amount = amount;
         this.isDirect = isDirect;
     }

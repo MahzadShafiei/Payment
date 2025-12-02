@@ -1,6 +1,8 @@
 package Services;
 
 import Contract.Pos;
+import Enums.Menu;
+
 import java.time.LocalDate;
 
 public class Posinfo implements Pos {
@@ -8,7 +10,7 @@ public class Posinfo implements Pos {
     public LocalDate withdrawalDate;
     public final String bankAccountNumber = "123";
     public int posCode;
-
+    public Menu selectedMenu;
     public Posinfo(String cardNumber, LocalDate withdrawalDate, int posCode) {
         this.cardNumber = cardNumber;
         this.withdrawalDate = withdrawalDate;

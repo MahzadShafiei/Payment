@@ -1,13 +1,10 @@
 package Services;
 
-import java.time.LocalDate;
-import Contract.Pos;
 import Contract.Sms;
-import Enums.Menu;
 
 public class AccountBalance extends Payment{
-    public AccountBalance(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, Menu selectedMenu) {
-        super(pos, sms, cardNumber, withdrawalDate, selectedMenu);
+    public AccountBalance(Sms sms,Posinfo posinfo) {
+        super(sms,posinfo);
     }
 
     @Override

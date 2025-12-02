@@ -1,17 +1,13 @@
 package Services;
 
-import Contract.Pos;
 import Contract.Sms;
 import Contract.fee;
 import Contract.Systemic;
-import Enums.Menu;
-
-import java.time.LocalDate;
 
 public class Bill extends SystemicPayment implements fee, Systemic {
 
-    public Bill(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, Menu selectedMenu, double billId, double paymentId) {
-        super(pos, sms, cardNumber, withdrawalDate, selectedMenu);
+    public Bill(Sms sms, Posinfo posinfo, double billId, double paymentId) {
+        super(sms, posinfo);
     }
 
     @Override

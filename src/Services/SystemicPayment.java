@@ -1,17 +1,14 @@
 package Services;
 
-import java.time.LocalDate;
-import Contract.Pos;
 import Contract.Sms;
 import Contract.fee;
-import Enums.Menu;
 
 public abstract class SystemicPayment extends Payment implements fee {
 
     protected double amount;
     protected String recieveAccountNumber;
-    public SystemicPayment(Pos pos, Sms sms, String cardNumber, LocalDate withdrawalDate, Menu selectedMenu) {
-        super(pos, sms, cardNumber, withdrawalDate, selectedMenu);
+    public SystemicPayment(Sms sms,Posinfo posinfo) {
+        super(sms, posinfo);
     }
 
     @Override

@@ -20,24 +20,25 @@ public class MainMenu {
         int selectedMenuCode = Integer.parseInt(scanner.nextLine());
 
         Menu selectedMenu = Menu.fromCode(selectedMenuCode);
+        posinfo.selectedMenu = selectedMenu;
         System.out.println("\n************    " + selectedMenu.getMenuName() + "    ************");
 
         switch(selectedMenu)
         {
             case AccountBalance:
-                accountBalanceProccess(selectedMenu);
+                accountBalanceProccess();
                 break;
 
             case Buy:
-                buyProccess(selectedMenu);
+                buyProccess();
                 break;
 
             case Bill:
-                billProccess(selectedMenu);
+                billProccess();
                 break;
 
             case Charg:
-                chargeProccess(selectedMenu);
+                chargeProccess();
                 break;
 
             default :
@@ -48,31 +49,31 @@ public class MainMenu {
         payment.processPayment();
     }
 
-    private void accountBalanceProccess(Menu selectedMenu)
+    private void accountBalanceProccess()
     {
         getCardPassword();
-        payment = new AccountBalance(posinfo, paymentSms, posinfo.cardNumber, posinfo.withdrawalDate, selectedMenu);
+        payment = new AccountBalance(paymentSms, posinfo);
     }
 
-    private void buyProccess(Menu selectedMenu)
+    private void buyProccess()
     {
         System.out.println("Please enter the price: ");
         double price = Double.parseDouble(scanner.nextLine());
         getCardPassword();
-        payment = new Buy(posinfo, paymentSms, posinfo.cardNumber, posinfo.withdrawalDate, price, selectedMenu);
+        payment = new Buy(posinfo, paymentSms, posinfo, price);
     }
 
-    private void billProccess(Menu selectedMenu)
+    private void billProccess()
     {
         System.out.println("Please enter the bill Id: ");
         double billId = Double.parseDouble(scanner.nextLine());
         System.out.println("Please enter the Payment Id: ");
         double paymentId = Double.parseDouble(scanner.nextLine());
         getCardPassword();
-        payment = new Bill(posinfo, paymentSms, posinfo.cardNumber, posinfo.withdrawalDate, selectedMenu, billId, paymentId);
+        payment = new Bill(paymentSms, posinfo, billId, paymentId);
     }
 
-    private void chargeProccess(Menu selectedMenu)
+    private void chargeProccess()
     {
         System.out.println("1. Direct");
         System.out.println("2. Pin");
@@ -83,7 +84,7 @@ public class MainMenu {
         String phoneNumber = scanner.nextLine();
         getCardPassword();
         boolean isDirectCharge = selectedChargeMenu ==1;
-        payment = new ChargSimHamrah(posinfo, paymentSms, posinfo.cardNumber, posinfo.withdrawalDate,amount, selectedMenu, phoneNumber, isDirectCharge);
+        payment = new ChargSimHamrah(paymentSms, posinfo,amount, phoneNumber, isDirectCharge);
     }
 
     public Posinfo getCardPosInfo()
