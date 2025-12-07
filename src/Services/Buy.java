@@ -17,7 +17,7 @@ public class Buy extends Payment implements fee{
     }
 
     @Override
-    public boolean processPayment() {
+    public void processPayment() {
         super.calculateFee();
         double balance = getBalance();
         String posOwnerAccountNumber = getPosOwnerAccountNumber();
@@ -25,12 +25,12 @@ public class Buy extends Payment implements fee{
             super.transfer(posOwnerAccountNumber, cardNumber, amount);
             super.transfer(bankAccountNumber, cardNumber, fee);
             super.printReceipt(amount + fee);
-            return true;
         }
         else  {
             super.sendSMS("Not enough money");
-            return false;
         }
+
+        super.backToMainMenu();
     }
 
     public String getPosOwnerAccountNumber()

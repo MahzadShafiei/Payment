@@ -1,12 +1,14 @@
 package Services;
 
 import java.time.LocalDate;
-import Contract.Pos;
+import java.util.Scanner;
+
 import Contract.Sms;
 import Contract.fee;
 import Enums.Menu;
 
 public abstract class Payment implements fee{
+    private Scanner scanner = new Scanner(System.in);
     protected final Sms sms;
     protected double fee;
     protected String cardNumber;
@@ -49,7 +51,15 @@ public abstract class Payment implements fee{
         };
     }
 
-    public abstract boolean processPayment();
+    public abstract void processPayment();
+
+    public void backToMainMenu()
+    {
+        System.out.println("\nEnter to back main menu ");
+        scanner.nextLine();
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.start();
+    }
 
     protected void  sendSMS(String message)
     {

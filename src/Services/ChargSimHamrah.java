@@ -1,36 +1,37 @@
 package Services;
 
-import java.time.LocalDate;
-import Contract.Pos;
 import Contract.Sms;
 import Contract.Systemic;
-import Enums.Menu;
+import Enums.SimOperator;
 
 public class ChargSimHamrah extends SystemicPayment implements Systemic {
     private boolean isDirect;
-    public ChargSimHamrah(Sms sms, Posinfo posinfo, double amount, String phoneNumber, boolean isDirect) {
+    private SimOperator simOperator;
+    public ChargSimHamrah(Sms sms, Posinfo posinfo, double amount, String phoneNumber, boolean isDirect, SimOperator simOperator) {
         super(sms, posinfo);
         super.amount = amount;
         this.isDirect = isDirect;
+        this.simOperator = simOperator;
     }
 
     @Override
-    public void getPaymentInfo() {
-        recieveAccountNumber = "789";
-    }
-
-    @Override
-    public boolean processPayment() {
+    public void processPayment() {
         getPaymentInfo();
         super.processPayment();
         sendPaymentResult();
-        return true;
+        super.backToMainMenu();
+    }
+
+    @Override
+    public boolean getPaymentInfo() {
+        recieveAccountNumber = "789";
+        return  true;
     }
 
     @Override
     public void sendPaymentResult() {
         //ارسال شماره موبایل به اپراتور
         if(!isDirect)
-            System.out.println("Pin: "+ 1234);
+            System.out.println("Pin: ****");
     }
 }

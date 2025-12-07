@@ -12,18 +12,16 @@ public abstract class SystemicPayment extends Payment implements fee {
     }
 
     @Override
-    public boolean processPayment() {
+    public void processPayment() {
         super.calculateFee();
         double balance = getBalance();
         if(balance>=(fee+amount)) {
             super.transfer(recieveAccountNumber, cardNumber, amount);
             super.transfer(bankAccountNumber, cardNumber, fee);
             super.printReceipt(amount + fee);
-            return true;
         }
         else {
             super.sendSMS( "Not enough money");
-            return false;
         }
     }
 

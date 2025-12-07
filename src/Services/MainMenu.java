@@ -1,8 +1,12 @@
 package Services;
 
 import Enums.Menu;
+import Enums.SimOperator;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.awt.*;
 
 public class MainMenu {
 
@@ -51,7 +55,7 @@ public class MainMenu {
 
     private void accountBalanceProccess()
     {
-        getCardPassword();
+        getCardInfo();
         payment = new AccountBalance(paymentSms, posinfo);
     }
 
@@ -59,7 +63,7 @@ public class MainMenu {
     {
         System.out.println("Please enter the price: ");
         double price = Double.parseDouble(scanner.nextLine());
-        getCardPassword();
+        getCardInfo();
         payment = new Buy(posinfo, paymentSms, posinfo, price);
     }
 
@@ -69,7 +73,7 @@ public class MainMenu {
         double billId = Double.parseDouble(scanner.nextLine());
         System.out.println("Please enter the Payment Id: ");
         double paymentId = Double.parseDouble(scanner.nextLine());
-        getCardPassword();
+        getCardInfo();
         payment = new Bill(paymentSms, posinfo, billId, paymentId);
     }
 
@@ -78,13 +82,31 @@ public class MainMenu {
         System.out.println("1. Direct");
         System.out.println("2. Pin");
         int selectedChargeMenu = Integer.parseInt(scanner.nextLine());
+        boolean isDirectCharge = selectedChargeMenu ==1;
+
+        for (SimOperator simOperator : SimOperator.values())
+            System.out.println(simOperator.getSimOperatorCode() + ". " + simOperator.getOperatorName());
+
+        System.out.println("Please return you desired Operator: ");
+        int selectedOperatorCode = Integer.parseInt(scanner.nextLine());
+        SimOperator selectedOperator = SimOperator.fromCode(selectedOperatorCode);
+
         System.out.println("Please enter the amount: ");
         double amount = Double.parseDouble(scanner.nextLine());
-        System.out.println("Please enter the phone number: ");
-        String phoneNumber = scanner.nextLine();
-        getCardPassword();
-        boolean isDirectCharge = selectedChargeMenu ==1;
-        payment = new ChargSimHamrah(paymentSms, posinfo,amount, phoneNumber, isDirectCharge);
+
+        String phoneNumber = "";
+        if(isDirectCharge)
+        {
+            do {
+                System.out.print("Please enter the phone number: ");
+                phoneNumber = scanner.nextLine().trim();
+            }
+            while ((!phoneNumber.matches("\\d{11}"))|| !phoneNumber.startsWith("09"));
+        }
+
+        getCardInfo();
+
+        payment = new ChargSimHamrah(paymentSms, posinfo, amount, phoneNumber, isDirectCharge, selectedOperator);
     }
 
     public Posinfo getCardPosInfo()
@@ -92,16 +114,29 @@ public class MainMenu {
         return new Posinfo("5859", LocalDate.now(), 2);
     }
 
-    public void getCardPassword()
+    public void getCardInfo()
     {
-        //System.out.println("Please enter your card password: ");
-        //String cardPassword = scanner.nextLine();
-        String cardPassword;
-        do {
-            System.out.print("Please enter your 4-digit password: ");
-            cardPassword = scanner.nextLine().trim();
+
+        try {
+            File file = new File("data.txt");
+            Scanner filescanner = new Scanner(file);
+
+        while (filescanner.hasNextLine()) {
+            String line = filescanner.nextLine();
+            System.out.println("Read: " + line);
         }
-        while (!cardPassword.matches("\\d{4}"));
+
+        filescanner.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        //String cardPassword;
+        //do {
+        //    System.out.print("Please enter your 4-digit password: ");
+        //    cardPassword = scanner.nextLine().trim();
+        //}
+        //while (!cardPassword.matches("\\d{4}"));
+
         //Validation Password
     }
 }

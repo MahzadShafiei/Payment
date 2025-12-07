@@ -1,6 +1,6 @@
 package Contract;
 
 public interface Systemic {
-    public void getPaymentInfo();
+    public boolean getPaymentInfo();
     public void sendPaymentResult();
 }
