@@ -2,7 +2,8 @@ package Enums;
 
 public enum SimOperator {
     HamrahAval(1),
-    Irancell(2);
+    Irancell(2),
+    Rightel(3);
 
     private int simOperator;
     SimOperator(int code) {

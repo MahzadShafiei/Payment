@@ -1,41 +1,36 @@
 package Services;
 
-import Contract.Pos;
-import Contract.Sms;
 import Contract.fee;
 import Enums.Menu;
 
 public class Buy extends Payment implements fee{
 
-    private double amount;
-    private Pos pos;
+    private final double amount;
     private Menu menu;
-    public Buy(Pos pos, Sms sms,Posinfo posinfo, double amount) {
-        super(sms, posinfo);
+    private final Posinfo posinfo;
+
+    public Buy(PaymentSms paymentSms,Posinfo posinfo, double amount) {
+        super(paymentSms, posinfo);
         this.amount = amount;
-        this.pos = pos;
+        this.posinfo = posinfo;
     }
 
     @Override
     public void processPayment() {
         super.calculateFee();
         double balance = getBalance();
-        String posOwnerAccountNumber = getPosOwnerAccountNumber();
-        if(balance >= (fee + amount)) {
-            super.transfer(posOwnerAccountNumber, cardNumber, amount);
-            super.transfer(bankAccountNumber, cardNumber, fee);
-            super.printReceipt(amount + fee);
-        }
-        else  {
-            super.sendSMS("Not enough money");
+        String posOwnerAccountNumber = this.posinfo.getPosOwnerAccountNumber();
+
+        if(super.payConfirmation(""))
+        {
+            if (balance >= (fee + amount)) {
+                super.transfer(posOwnerAccountNumber, cardNumber, amount);
+                super.transfer(bankAccountNumber, cardNumber, fee);
+                super.printReceipt(amount + fee);
+            } else
+                super.sendSMS("Not enough money");
         }
 
         super.backToMainMenu();
     }
-
-    public String getPosOwnerAccountNumber()
-    {
-        return pos.getPosOwnerAccountNumber();
-    }
-
 }

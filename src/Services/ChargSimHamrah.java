@@ -1,15 +1,24 @@
 package Services;
 
-import Contract.Sms;
 import Contract.Systemic;
 import Enums.SimOperator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class ChargSimHamrah extends SystemicPayment implements Systemic {
     private boolean isDirect;
     private SimOperator simOperator;
-    public ChargSimHamrah(Sms sms, Posinfo posinfo, double amount, String phoneNumber, boolean isDirect, SimOperator simOperator) {
-        super(sms, posinfo);
-        super.amount = amount;
+    public static final Map<String, String> amountDictionary = new HashMap<>();
+
+    static {
+        amountDictionary.put("1", "1000$");
+        amountDictionary.put("2", "2000$");
+        amountDictionary.put("3", "3000$");
+    }
+
+    public ChargSimHamrah(PaymentSms paymentSms , Posinfo posinfo, String phoneNumber, boolean isDirect, SimOperator simOperator) {
+        super(paymentSms, posinfo);
         this.isDirect = isDirect;
         this.simOperator = simOperator;
     }
@@ -17,13 +26,33 @@ public class ChargSimHamrah extends SystemicPayment implements Systemic {
     @Override
     public void processPayment() {
         getPaymentInfo();
-        super.processPayment();
-        sendPaymentResult();
+        getSelectedAmount();
+        super.calculateFee();
+        if(super.payConfirmation("\nThe operator is: " + simOperator.getOperatorName() + " \n" +
+                "The amount is: "+ amount+ "$")) {
+            super.processPayment();
+            sendPaymentResult();
+        }
         super.backToMainMenu();
+    }
+
+    private void getSelectedAmount()
+    {
+        System.out.println("\nPlease return you desired amount code: ");
+
+        for(Map.Entry<String, String> entry : amountDictionary.entrySet())
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+
+        Scanner scanner = new Scanner(System.in);
+        String selectedAmount = scanner.nextLine();
+
+        String selectedAmountValue = amountDictionary.get(selectedAmount);
+        super.amount = Double.parseDouble(selectedAmountValue.substring(0, selectedAmountValue.length() - 1));
     }
 
     @Override
     public boolean getPaymentInfo() {
+        //بواسطه اطلاعات اپراتور
         recieveAccountNumber = "789";
         return  true;
     }

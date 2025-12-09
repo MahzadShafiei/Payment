@@ -9,9 +9,9 @@ public class Posinfo implements Pos {
     public String cardNumber;
     public LocalDate withdrawalDate;
     public final String bankAccountNumber = "123";
-    public int posCode;
+    public String posCode;
     public Menu selectedMenu;
-    public Posinfo(String cardNumber, LocalDate withdrawalDate, int posCode) {
+    public Posinfo(String cardNumber, LocalDate withdrawalDate, String posCode) {
         this.cardNumber = cardNumber;
         this.withdrawalDate = withdrawalDate;
         this.posCode = posCode;

@@ -9,16 +9,16 @@ import Enums.Menu;
 
 public abstract class Payment implements fee{
     private Scanner scanner = new Scanner(System.in);
-    protected final Sms sms;
+    protected final PaymentSms paymentSms;
     protected double fee;
     protected String cardNumber;
     protected LocalDate withdrawalDate;
     protected final String bankAccountNumber;
     protected final Menu selectedMenu;
 
-    public Payment(Sms sms, Posinfo posinfo)
+    public Payment(PaymentSms paymentSms, Posinfo posinfo)
     {
-        this.sms = sms;
+        this.paymentSms = paymentSms;
         this.bankAccountNumber = posinfo.bankAccountNumber;
         this.cardNumber = posinfo.cardNumber;
         this.withdrawalDate = posinfo.withdrawalDate;
@@ -63,14 +63,13 @@ public abstract class Payment implements fee{
 
     protected void  sendSMS(String message)
     {
-        String phoneNumber = this.sms.getPhoneNumber(cardNumber);
-        this.sms.sendSMS(message, phoneNumber);
+        this.paymentSms.sendSMS(message);
     }
 
     protected  double getBalance()
     {
         //by cardNumber from a service
-        return 1000;
+        return 2000;
     }
 
     protected void transfer(String destinationAccount, String  cardNumber, double amount)
@@ -80,6 +79,16 @@ public abstract class Payment implements fee{
 
     protected void printReceipt(double withdrawalAmount)
     {
-        System.out.println("Receipt: Withdrawal " + withdrawalAmount + "$ by cardNumber: " + cardNumber + "---------------------" + withdrawalDate );
+        String hiddenCardNumber = cardNumber.substring(0,8)+"****"+cardNumber.substring(12,16);
+        System.out.println("\nReceipt: Withdrawal " + withdrawalAmount + "$ by cardNumber: " + hiddenCardNumber + "---------------------" + withdrawalDate );
+    }
+
+    protected  boolean payConfirmation(String confirmationMessage)
+    {
+        System.out.println(confirmationMessage +
+                "\nThe fee is: "+ fee + "$"+
+                "\nDo you want to continue? (press y to continue or anything else to cancel)");
+        String billConfirmation = scanner.nextLine();
+        return billConfirmation.equals("y");
     }
 }

@@ -1,25 +1,24 @@
 package Services;
 
-import Contract.Sms;
-
 public class AccountBalance extends Payment{
-    public AccountBalance(Sms sms,Posinfo posinfo) {
-        super(sms,posinfo);
+    public AccountBalance(PaymentSms paymentSms,Posinfo posinfo) {
+        super(paymentSms,posinfo);
     }
 
     @Override
     public void processPayment() {
         super.calculateFee();
-        double balance = getBalance();
-        if(balance >= super.fee) {
-            super.transfer(bankAccountNumber, cardNumber, super.fee);
-            super.printReceipt(super.fee);
-            super.sendSMS("Your balance is $" + balance);
+        double balance = super.getBalance();
+
+        if(super.payConfirmation("")) {
+            if (balance >= super.fee) {
+                super.transfer(bankAccountNumber, cardNumber, super.fee);
+                super.printReceipt(super.fee);
+                super.sendSMS("Your balance is $" + balance);
+            } else
+                super.sendSMS("Not enough money");
         }
-        else
-        {
-            super.sendSMS("Not enough money");
-        }
+
         super.backToMainMenu();
     }
 }
