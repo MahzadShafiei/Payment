@@ -12,9 +12,9 @@ public class ChargSimHamrah extends SystemicPayment implements Systemic {
     public static final Map<String, String> amountDictionary = new HashMap<>();
 
     static {
-        amountDictionary.put("1", "1000$");
-        amountDictionary.put("2", "2000$");
-        amountDictionary.put("3", "3000$");
+        amountDictionary.put("1", "1000 Rial");
+        amountDictionary.put("2", "2000 Rial");
+        amountDictionary.put("3", "3000 Rial");
     }
 
     public ChargSimHamrah(PaymentSms paymentSms , Posinfo posinfo, String phoneNumber, boolean isDirect, SimOperator simOperator) {
@@ -29,7 +29,7 @@ public class ChargSimHamrah extends SystemicPayment implements Systemic {
         getSelectedAmount();
         super.calculateFee();
         if(super.payConfirmation("\nThe operator is: " + simOperator.getOperatorName() + " \n" +
-                "The amount is: "+ amount+ "$")) {
+                "The amount is: "+ amount+ " Rial")) {
             super.processPayment();
             sendPaymentResult();
         }

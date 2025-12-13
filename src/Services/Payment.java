@@ -80,13 +80,13 @@ public abstract class Payment implements fee{
     protected void printReceipt(double withdrawalAmount)
     {
         String hiddenCardNumber = cardNumber.substring(0,8)+"****"+cardNumber.substring(12,16);
-        System.out.println("\nReceipt: Withdrawal " + withdrawalAmount + "$ by cardNumber: " + hiddenCardNumber + "---------------------" + withdrawalDate );
+        System.out.println("\nReceipt: Withdrawal " + withdrawalAmount + "Rial by cardNumber: " + hiddenCardNumber + "---------------------" + withdrawalDate );
     }
 
     protected  boolean payConfirmation(String confirmationMessage)
     {
         System.out.println(confirmationMessage +
-                "\nThe fee is: "+ fee + "$"+
+                "\nThe fee is: "+ fee + "Rial"+
                 "\nDo you want to continue? (press y to continue or anything else to cancel)");
         String billConfirmation = scanner.nextLine();
         return billConfirmation.equals("y");

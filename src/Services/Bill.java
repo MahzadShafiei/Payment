@@ -43,7 +43,7 @@ public class Bill extends SystemicPayment implements fee, Systemic {
         recieveAccountNumber = "147";
         amount = Double.parseDouble(paymentAmount + "000");
         return super.payConfirmation("\nThe bill organization: " + Organiztion.fromCode(Integer.parseInt(billServiceCode))+
-                "\nThe bill amount is: " + amount+ "$"+
+                "\nThe bill amount is: " + amount+ " Rial"+
                 "\nThe year: 140" + paymentYear+
                 "\nThe period: " + paymentPeriod);
     }
