@@ -1,8 +1,8 @@
-package Services;
+package com.mahzad.payment.services;
 
-import Contract.fee;
+import com.mahzad.payment.contract.Fee;
 
-public abstract class SystemicPayment extends Payment implements fee {
+public abstract class SystemicPayment extends Payment implements Fee {
 
     protected double amount;
     protected String recieveAccountNumber;

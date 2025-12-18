@@ -1,4 +1,4 @@
-package Enums;
+package com.mahzad.payment.enums;
 
 public enum Menu {
     AccountBalance(1),

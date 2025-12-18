@@ -1,6 +1,6 @@
-package Services;
+package com.mahzad.payment.services;
 
-import Contract.Sms;
+import com.mahzad.payment.contract.Sms;
 
 public class PaymentSms implements Sms{
     public final String cardNumber;

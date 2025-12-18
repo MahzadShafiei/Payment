@@ -1,12 +1,13 @@
-package Services;
+package com.mahzad.payment.services;
 
-import Contract.fee;
-import Contract.Systemic;
-import Enums.Organiztion;
+import com.mahzad.payment.contract.Fee;
+import com.mahzad.payment.contract.Systemic;
+import com.mahzad.payment.enums.Organiztion;
+import common.ConfigLoadException;
 
 import java.util.Scanner;
 
-public class Bill extends SystemicPayment implements fee, Systemic {
+public class Bill extends SystemicPayment implements Fee, Systemic {
 
     Scanner scanner = new Scanner(System.in);
     final String billId;
@@ -50,12 +51,17 @@ public class Bill extends SystemicPayment implements fee, Systemic {
 
     @Override
     public void processPayment() {
-        super.calculateFee();
-        if(getPaymentInfo()) {
-            super.processPayment();
+        try {
+            super.calculateFee();
+            if (getPaymentInfo()) {
+                super.processPayment();
+            }
+            sendPaymentResult();
+            super.backToMainMenu();
         }
-        sendPaymentResult();
-        super.backToMainMenu();
+        catch (Exception e) {
+            throw new ConfigLoadException("Failed to process bill payment", e);
+        }
     }
 
     @Override

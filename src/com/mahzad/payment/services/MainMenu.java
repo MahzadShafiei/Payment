@@ -1,13 +1,14 @@
-package Services;
+package com.mahzad.payment.services;
 
-import Enums.Menu;
-import Enums.SimOperator;
+import com.mahzad.payment.enums.Menu;
+import com.mahzad.payment.enums.SimOperator;
+import common.ConfigLoadException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.awt.*;
 
 public class MainMenu {
 
@@ -18,43 +19,50 @@ public class MainMenu {
 
     public void start()
     {
-        for (Menu menu : Menu.values())
-            System.out.println(menu.getMenuCode() + ". " + menu.getMenuName());
+        try {
+            for (Menu menu : Menu.values())
+                System.out.println(menu.getMenuCode() + ". " + menu.getMenuName());
 
-        System.out.println("Please return you desired menu code: ");
-        int selectedMenuCode = Integer.parseInt(scanner.nextLine());
+            System.out.println("Please return you desired menu code: ");
+            int selectedMenuCode = Integer.parseInt(scanner.nextLine());
 
-        getPosInfo();
+            getPosInfo();
 
-        Menu selectedMenu = Menu.fromCode(selectedMenuCode);
-        posinfo.selectedMenu = selectedMenu;
-        System.out.println("\n************    " + selectedMenu.getMenuName() + "    ************");
+            Menu selectedMenu = Menu.fromCode(selectedMenuCode);
+            posinfo.selectedMenu = selectedMenu;
+            System.out.println("\n************    " + selectedMenu.getMenuName() + "    ************");
 
-        switch(selectedMenu)
-        {
-            case AccountBalance:
-                accountBalanceProccess();
-                break;
+            switch (selectedMenu) {
+                case AccountBalance:
+                    accountBalanceProccess();
+                    break;
 
-            case Buy:
-                buyProccess();
-                break;
+                case Buy:
+                    buyProccess();
+                    break;
 
-            case Bill:
-                billProccess();
-                break;
+                case Bill:
+                    billProccess();
+                    break;
 
-            case Charg:
-                chargeProccess();
-                break;
+                case Charg:
+                    chargeProccess();
+                    break;
 
-            default :
-                payment = null;
+                default:
+                    payment = null;
 
-        };
+            }
+            ;
 
-        payment.processPayment();
-
+            payment.processPayment();
+        }
+        catch (IOException e) {
+            throw new ConfigLoadException("Failed to load config", e);
+        }
+        catch (Exception e) {
+            throw new ConfigLoadException(e.getMessage(), e);
+        }
     }
 
     private void accountBalanceProccess()
@@ -136,25 +144,17 @@ public class MainMenu {
         payment = new ChargSimHamrah(paymentSms, posinfo, phoneNumber, isDirectCharge, selectedOperator);
     }
 
-    public void getPosInfo()
+    public void getPosInfo() throws IOException
     {
         String pan ="";
         String pass = "";
         String posCode = "";
-        try {
-            File file = new File("data.txt");
-            Scanner filescanner = new Scanner(file);
-            pan = filescanner.nextLine();
-            pass = filescanner.nextLine();
-            filescanner.close();
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("Error: فایل اطلاعات دستگاه پیدا نشد");
-            System.out.println("\nEnter to try again ");
-            scanner.nextLine();
-            MainMenu mainMenu = new MainMenu();
-            mainMenu.start();
-        }
+        File file = new File("data.txt");
+        Scanner filescanner = new Scanner(file);
+        pan = filescanner.nextLine();
+        pass = filescanner.nextLine();
+        filescanner.close();
+
         //If Validation Password Service
         posinfo = new Posinfo(pan, LocalDate.now(), posCode);
         paymentSms = new PaymentSms(pan);

@@ -1,14 +1,16 @@
-package Services;
+package com.mahzad.payment.services;
 
-import Contract.Systemic;
-import Enums.SimOperator;
+import com.mahzad.payment.contract.Systemic;
+import com.mahzad.payment.enums.SimOperator;
+import common.ConfigLoadException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class ChargSimHamrah extends SystemicPayment implements Systemic {
-    private boolean isDirect;
-    private SimOperator simOperator;
+    private final boolean isDirect;
+    private final SimOperator simOperator;
     public static final Map<String, String> amountDictionary = new HashMap<>();
 
     static {
@@ -25,15 +27,20 @@ public class ChargSimHamrah extends SystemicPayment implements Systemic {
 
     @Override
     public void processPayment() {
-        getPaymentInfo();
-        getSelectedAmount();
-        super.calculateFee();
-        if(super.payConfirmation("\nThe operator is: " + simOperator.getOperatorName() + " \n" +
-                "The amount is: "+ amount+ " Rial")) {
-            super.processPayment();
-            sendPaymentResult();
+        try {
+            getPaymentInfo();
+            getSelectedAmount();
+            super.calculateFee();
+            if (super.payConfirmation("\nThe operator is: " + simOperator.getOperatorName() + " \n" +
+                    "The amount is: " + amount + " Rial")) {
+                super.processPayment();
+                sendPaymentResult();
+            }
+            super.backToMainMenu();
         }
-        super.backToMainMenu();
+        catch (Exception e) {
+            throw new ConfigLoadException("Failed to process charge sim payment", e);
+        }
     }
 
     private void getSelectedAmount()

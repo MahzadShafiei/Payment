@@ -1,7 +1,7 @@
-package Services;
+package com.mahzad.payment.services;
 
-import Contract.Pos;
-import Enums.Menu;
+import com.mahzad.payment.contract.Pos;
+import com.mahzad.payment.enums.Menu;
 
 import java.time.LocalDate;
 

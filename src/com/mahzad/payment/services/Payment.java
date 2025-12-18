@@ -1,13 +1,12 @@
-package Services;
+package com.mahzad.payment.services;
 
 import java.time.LocalDate;
 import java.util.Scanner;
 
-import Contract.Sms;
-import Contract.fee;
-import Enums.Menu;
+import com.mahzad.payment.contract.Fee;
+import com.mahzad.payment.enums.Menu;
 
-public abstract class Payment implements fee{
+public abstract class Payment implements Fee {
     private Scanner scanner = new Scanner(System.in);
     protected final PaymentSms paymentSms;
     protected double fee;
