@@ -19,7 +19,6 @@ public abstract class SystemicPayment extends Payment implements Fee {
         if(balance>=(fee+amount)) {
             super.transfer(recieveAccountNumber, cardNumber, amount);
             super.transfer(bankAccountNumber, cardNumber, fee);
-            super.printReceipt(amount + fee);
         }
         else
             super.sendSMS( "Not enough money");

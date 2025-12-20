@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -20,13 +21,13 @@ public class MainMenu {
     public void start()
     {
         try {
+            getCardInfo();
+
             for (Menu menu : Menu.values())
                 System.out.println(menu.getMenuCode() + ". " + menu.getMenuName());
 
             System.out.println("Please return you desired menu code: ");
             int selectedMenuCode = Integer.parseInt(scanner.nextLine());
-
-            getPosInfo();
 
             Menu selectedMenu = Menu.fromCode(selectedMenuCode);
             posinfo.selectedMenu = selectedMenu;
@@ -57,9 +58,7 @@ public class MainMenu {
 
             payment.processPayment();
         }
-        catch (IOException e) {
-            throw new ConfigLoadException("Failed to load config", e);
-        }
+
         catch (Exception e) {
             throw new ConfigLoadException(e.getMessage(), e);
         }
@@ -144,20 +143,23 @@ public class MainMenu {
         payment = new ChargSimHamrah(paymentSms, posinfo, phoneNumber, isDirectCharge, selectedOperator);
     }
 
-    public void getPosInfo() throws IOException
+    private void getCardInfo()
     {
-        String pan ="";
-        String pass = "";
+        int counter = 0;
+        String pan="";
         String posCode = "";
-        File file = new File("data.txt");
-        Scanner filescanner = new Scanner(file);
-        pan = filescanner.nextLine();
-        pass = filescanner.nextLine();
-        filescanner.close();
 
-        //If Validation Password Service
-        posinfo = new Posinfo(pan, LocalDate.now(), posCode);
+        do {
+            if(counter>2)
+                throw new IllegalArgumentException("Card number is not correct, try again another time.");
+            counter++;
+            System.out.println("Please enter your card number: ");
+            pan = scanner.nextLine();
+        }
+        while (pan.length()!=16);
+
+        posinfo = new Posinfo(pan, LocalDateTime.now(), posCode);
         paymentSms = new PaymentSms(pan);
-        System.out.print("\nReceiving Card Information From File...... \n");
     }
+
 }

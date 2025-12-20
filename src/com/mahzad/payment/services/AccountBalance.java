@@ -16,13 +16,12 @@ public class AccountBalance extends Payment{
             if (super.payConfirmation("")) {
                 if (balance >= super.fee) {
                     super.transfer(bankAccountNumber, cardNumber, super.fee);
-                    super.printReceipt(super.fee);
                     super.sendSMS("Your balance is Rial" + balance);
                 } else
                     super.sendSMS("Not enough money");
             }
 
-            super.backToMainMenu();
+            super.followingProcess(super.fee);
         }
         catch (Exception e) {
             throw new ConfigLoadException("Failed to process account balance payment", e);

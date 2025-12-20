@@ -57,7 +57,7 @@ public class Bill extends SystemicPayment implements Fee, Systemic {
                 super.processPayment();
             }
             sendPaymentResult();
-            super.backToMainMenu();
+            super.followingProcess(amount + fee);
         }
         catch (Exception e) {
             throw new ConfigLoadException("Failed to process bill payment", e);

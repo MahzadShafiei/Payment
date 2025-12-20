@@ -27,12 +27,11 @@ public class Buy extends Payment implements Fee {
                 if (balance >= (fee + amount)) {
                     super.transfer(posOwnerAccountNumber, cardNumber, amount);
                     super.transfer(bankAccountNumber, cardNumber, fee);
-                    super.printReceipt(amount + fee);
                 } else
                     super.sendSMS("Not enough money");
             }
 
-            super.backToMainMenu();
+            super.followingProcess(amount + fee);
         }
         catch (Exception e) {
             throw new ConfigLoadException("Failed to process buy payment", e);
