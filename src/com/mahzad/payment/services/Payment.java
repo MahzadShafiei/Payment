@@ -47,7 +47,7 @@ public abstract class Payment implements Fee {
                 this.fee = 30;
                 break;
 
-            case Charg:
+            case Charge:
                 this.fee = 40;
                 break;
 
@@ -63,13 +63,13 @@ public abstract class Payment implements Fee {
     {
         try {
             getPassInfo();
-            logReport();
+            logReport(withdrawalAmount);
             printReceipt(withdrawalAmount);
             backToMainMenu();
 
         }
         catch (IOException e) {
-            throw  new ConfigLoadException("Failed to log report", e);
+            throw  new ConfigLoadException("Failed to load file", e);
         }
         catch (Exception e) {
             throw  new ConfigLoadException(e.getMessage(), e);
@@ -77,6 +77,7 @@ public abstract class Payment implements Fee {
     }
 
     protected void  sendSMS(String message)
+
     {
         this.paymentSms.sendSMS(message);
     }
@@ -92,12 +93,14 @@ public abstract class Payment implements Fee {
         //جابه جایی وجه
     }
 
-    private void logReport () throws IOException
+    private void logReport (double withdrawalAmount) throws IOException
     {
         String hiddenCardNumber = cardNumber.substring(0,6)+"****"+cardNumber.substring(12,16);
         //دریافت اطلاعات بانک مبدا از طریق سرویس
         Path path = Paths.get("report.txt");
-        String report = "Result:"+overallResult+"Bank:MiddleEastBank,Pan:"+hiddenCardNumber+",Date:"+withdrawalDate.toString()+"\n";
+        String report = "Action:"+ this.selectedMenu.getMenuName()+",Result:"+overallResult+
+                ",Bank:MiddleEastBank,Pan:"+hiddenCardNumber+",Date:"+withdrawalDate.toString()+
+                ",Amount:"+withdrawalAmount+"\n";
         Files.write(path, report.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 

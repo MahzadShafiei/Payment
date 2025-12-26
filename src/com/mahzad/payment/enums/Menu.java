@@ -4,7 +4,8 @@ public enum Menu {
     AccountBalance(1),
     Buy(2),
     Bill(3),
-    Charg(4);
+    Charge(4),
+    Report(5);
 
     private int menuCode;
     Menu(int menuCode) {

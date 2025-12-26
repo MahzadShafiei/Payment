@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -35,41 +36,52 @@ public class MainMenu {
 
             switch (selectedMenu) {
                 case AccountBalance:
-                    accountBalanceProccess();
+                    accountBalanceProcess();
                     break;
 
                 case Buy:
-                    buyProccess();
+                    buyProcess();
                     break;
 
                 case Bill:
-                    billProccess();
+                    billProcess();
                     break;
 
-                case Charg:
-                    chargeProccess();
+                case Charge:
+                    chargeProcess();
+                    break;
+
+                case Report:
+                    reportProcess();
+                    System.out.println("\nEnter to back main menu ");
+                    scanner.nextLine();
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.start();
                     break;
 
                 default:
                     payment = null;
 
-            }
-            ;
+            };
 
-            payment.processPayment();
+            if(selectedMenu != Menu.Report)
+                payment.processPayment();
         }
 
+        catch (IOException e) {
+            throw  new ConfigLoadException("Failed to log report", e);
+        }
         catch (Exception e) {
             throw new ConfigLoadException(e.getMessage(), e);
         }
     }
 
-    private void accountBalanceProccess()
+    private void accountBalanceProcess()
     {
         payment = new AccountBalance(paymentSms, posinfo);
     }
 
-    private void buyProccess()
+    private void buyProcess()
     {
         System.out.println("Please enter the price: ");
         double price = Double.parseDouble(scanner.nextLine());
@@ -78,7 +90,7 @@ public class MainMenu {
         payment = new Buy(paymentSms, posinfo, price);
     }
 
-    private void billProccess()
+    private void billProcess()
     {
         int counter = 0;
         String billId;
@@ -107,7 +119,7 @@ public class MainMenu {
         payment = new Bill(paymentSms, posinfo, billId, paymentId);
     }
 
-    private void chargeProccess()
+    private void chargeProcess()
     {
         System.out.println("1. Direct");
         System.out.println("2. Pin");
@@ -141,6 +153,23 @@ public class MainMenu {
         }
 
         payment = new ChargSimHamrah(paymentSms, posinfo, phoneNumber, isDirectCharge, selectedOperator);
+    }
+
+    private  void reportProcess() throws IOException
+    {
+        System.out.println("Please enter the from date (YYYY-MM-DD): ");
+        LocalDate fromDate = LocalDate.parse(scanner.nextLine());
+
+        System.out.println("Please enter the to date (YYYY-MM-DD): ");
+        LocalDate toDate = LocalDate.parse(scanner.nextLine());
+
+        System.out.println("Please enter the from time: ");
+        LocalTime fromTime = LocalTime.parse(scanner.nextLine());
+
+        System.out.println("Please enter the to time: ");
+        LocalTime toTime = LocalTime.parse(scanner.nextLine());
+        Report report = new Report(fromDate, toDate, fromTime, toTime);
+        report.generateReport();
     }
 
     private void getCardInfo()
