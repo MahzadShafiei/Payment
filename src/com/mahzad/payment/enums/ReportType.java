@@ -4,7 +4,7 @@ public enum ReportType {
     Daily(1),
     ByTime(2);
 
-    private int reportCode;
+    private final int reportCode;
     ReportType(int reportCode) {
         this.reportCode = reportCode;
     }
